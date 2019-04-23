@@ -1,0 +1,258 @@
+
+Assignment Step Description
+Read the given set of questions and solve them by writing queries using MySQL
+
+Problem Statement
+Note management app (similar to Google Keep) is used to take notes, add notes into categories and set reminders for a note. Create the necessary DB schema (MySQL) including
+tables, relationships, triggers and add sample data into each table.
+
+Expected Solution
+Create the tables for Note, Category, Reminder, User, UserNote, NoteReminder and NoteCategory.
+User table fields: user_id, user_name, user_added_date, user_password, user_mobile
+
+
+Ahter Creation and Insertion of data in tables:
+User table fields: user_id, user_name, user_added_date, user_password, user_mobile
++---------+-----------+-----------------+---------------+-------------+
+| user_id | user_name | user_added_date | user_password | user_mobile |
++---------+-----------+-----------------+---------------+-------------+
+|       1 | user1     | 2019-04-01      | 123user1      | 8248403136  |
+|       2 | user2     | 2019-04-02      | 123user2      | 8248403137  |
+|       3 | user3     | 2019-04-03      | 123user3      | 8248403138  |
+|       4 | user4     | 2019-04-04      | 123user4      | 8248403139  |
+|       5 | user5     | 2019-04-05      | 123user5      | 8248403131  |
++---------+-----------+-----------------+---------------+-------------+
+
+
+Note table fields: note_id, note_title, note_content, note_status, note_creation_date
++---------+------------+----------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                 | note_status | note_creation_date |
++---------+------------+----------------------------------------------+-------------+--------------------+
+| nt1     | work1      | This work should be done before the deadline | 20% done    | 2019-04-06         |
+| nt2     | work2      | This work should be done before the deadline | 30% done    | 2019-04-07         |
+| nt3     | work3      | This work should be done before the deadline | 50% done    | 2019-04-08         |
+| nt4     | work4      | This work should be done before the deadline | 75% done    | 2019-04-09         |
+| nt5     | work5      | This work should be done before the deadline | completed   | 2019-04-10         |
++---------+------------+----------------------------------------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+
+Category table fields : category_id, category_name, category_descr, category_creation_date, category_creator
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+| category_id | category_name | category_descr                             | category_creation_date | category_creator |
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+| ct1         | today         | This work should be done within today      | 2019-04-11             | user1            |
+| ct2         | whenever      | This work should be done whener possible   | 2019-04-12             | user2            |
+| ct3         | next month    | This work should be done within next month | 2019-04-13             | user3            |
+| ct4         | next week     | This work should be done within next weeek | 2019-04-14             | user4            |
+| ct4         | tomorrow      | This work should be done within tomorrow   | 2019-04-15             | user5            |
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+
+
+Reminder table fields : reminder_id, reminder_name, reminder_descr, reminder_type, reminder_creation_date, reminder_creator
++-------------+---------------+-----------------------------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name | reminder_descr                    | reminder_type | reminder_creation_date | reminder_creator |
++-------------+---------------+-----------------------------------+---------------+------------------------+------------------+
+| r1          | today         | Remind this work today at 5pm     | urgent        | 2019-04-12             | user1            |
+| r2          | birthday      | remind this on 2019-05-21 at 12am | later         | 2019-04-17             | user2            |
+| r3          | meeting       | remind this today at 10am         | soon          | 2019-04-18             | user3            |
+| r4          | annual day    | remind this on monday at 11am     | later         | 2019-04-19             | user4            |
+| r5          | fathers day   | remind this on 2019-12-12 at 12am | later         | 2019-04-21             | user5            |
++-------------+---------------+-----------------------------------+---------------+------------------------+------------------+
+
+
+
+NoteCategory table fields : notecategory_id, note_id, category_id
++-----------------+---------+-------------+
+| notecategory_id | note_id | category_id |
++-----------------+---------+-------------+
+| nc1             | nt1     | ct1         |
+| nc2             | nt2     | ct2         |
+| nc3             | nt3     | ct3         |
+| nc4             | nt4     | ct4         |
+| nc5             | nt5     | ct5         |
++-----------------+---------+-------------+
+
+
+Notereminder table fields : notereminder_id, note_id, reminder_id
++-----------------+---------+-------------+
+| notereminder_id | note_id | reminder_id |
++-----------------+---------+-------------+
+| nr1             | nt1     | r1          |
+| nr2             | nt2     | r2          |
+| nr3             | nt3     | r3          |
+| nr4             | nt4     | r4          |
+| nr5             | nt5     | r5          |
++-----------------+---------+-------------+
+5 rows in set (0.00 sec)
+
+
+usernote table fields : usernote_id, user_id, note_id
++-------------+---------+---------+
+| usernote_id | user_id | note_id |
++-------------+---------+---------+
+| usnt1       | usr1    | nt1     |
+| usnt2       | usr2    | nt2     |
+| usnt3       | usr3    | nt3     |
+| usnt4       | usr4    | nt4     |
+| usnt5       | usr5    | nt5     |
++-------------+---------+---------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+Fetch the row from User table based on Id and Password.
+mysql> select * from user where user_id=3 and user_password='123user3';
++---------+-----------+-----------------+---------------+-------------+
+| user_id | user_name | user_added_date | user_password | user_mobile |
++---------+-----------+-----------------+---------------+-------------+
+|       3 | user3     | 2019-04-03      | 123user3      | 8248403138  |
++---------+-----------+-----------------+---------------+-------------+
+1 row in set (0.00 sec)
+
+
+Fetch all the rows from Note table based on the field note_creation_date.
+mysql> select * from note where note_creation_date > '2019-04-05';
++---------+------------+----------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                 | note_status | note_creation_date |
++---------+------------+----------------------------------------------+-------------+--------------------+
+| nt1     | work1      | This work should be done before the deadline | 20% done    | 2019-04-06         |
+| nt2     | work2      | This work should be done before the deadline | 30% done    | 2019-04-07         |
+| nt3     | work3      | This work should be done before the deadline | 50% done    | 2019-04-08         |
+| nt4     | work4      | This work should be done before the deadline | 75% done    | 2019-04-09         |
+| nt5     | work5      | This work should be done before the deadline | completed   | 2019-04-10         |
++---------+------------+----------------------------------------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+
+Fetch all the Categories created after the particular Date.
+mysql> select * from category where category_creation_date >  '2019-04-13';
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+| category_id | category_name | category_descr                             | category_creation_date | category_creator |
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+| ct4         | next week     | This work should be done within next weeek | 2019-04-14             | user4            |
+| ct4         | tomorrow      | This work should be done within tomorrow   | 2019-04-15             | user5            |
++-------------+---------------+--------------------------------------------+------------------------+------------------+
+2 rows in set (0.00 sec)
+
+
+Fetch all the Note ID from UserNote table for a given User.
+mysql> select note_id from usernote where note_id in (select note_id from usernote where user_id in (select user_id from user where user_id='usr3'));
++---------+
+| note_id |
++---------+
+| nt3     |
++---------+
+1 row in set (0.00 sec)
+
+
+Write Update query to modify particular Note for the given note Id.
+mysql> update usernote set usernote_id='usn01' where note_id='nt1';
++-------------+---------+---------+
+| usernote_id | user_id | note_id |
++-------------+---------+---------+
+| usn01       | usr1    | nt1     |
+| usnt2       | usr2    | nt2     |
+| usnt3       | usr3    | nt3     |
+| usnt4       | usr4    | nt4     |
+| usnt5       | usr5    | nt5     |
++-------------+---------+---------+
+5 rows in set (0.00 sec)
+
+
+Fetch all the Notes from the Note table by a particular User.
+mysql> select * from note where note_id = (select note_id from usernote where user_id = 'usr3');
++---------+------------+----------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                 | note_status | note_creation_date |
++---------+------------+----------------------------------------------+-------------+--------------------+
+| nt3     | work3      | This work should be done before the deadline | 50% done    | 2019-04-08         |
++---------+------------+----------------------------------------------+-------------+--------------------+
+1 row in set (0.00 sec)
+
+
+Fetch all the Notes from the Note table for a particular Category.
+mysql> select * from note where note_id = (select note_id from NoteCategory where category_id = (select category_id from category where category_id='ct3'));
++---------+------------+----------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                 | note_status | note_creation_date |
++---------+------------+----------------------------------------------+-------------+--------------------+
+| nt3     | work3      | This work should be done before the deadline | 50% done    | 2019-04-08         |
++---------+------------+----------------------------------------------+-------------+--------------------+
+1 row in set (0.00 sec)
+
+
+Fetch all the reminder details for a given note id.
+mysql> select * from reminder where reminder_id =(select reminder_id from NoteReminder where note_id='nt3');
++-------------+---------------+---------------------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name | reminder_descr            | reminder_type | reminder_creation_date | reminder_creator |
++-------------+---------------+---------------------------+---------------+------------------------+------------------+
+| r3          | meeting       | remind this today at 10am | soon          | 2019-04-18             | user3            |
++-------------+---------------+---------------------------+---------------+------------------------+------------------+
+1 row in set (0.00 sec)
+
+
+Fetch the reminder details for a given reminder id.
+mysql> select * from reminder where reminder_id='r1';
++-------------+---------------+-------------------------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name | reminder_descr                | reminder_type | reminder_creation_date | reminder_creator |
++-------------+---------------+-------------------------------+---------------+------------------------+------------------+
+| r1          | today         | Remind this work today at 5pm | urgent        | 2019-04-12             | user1            |
++-------------+---------------+-------------------------------+---------------+------------------------+------------------+
+1 row in set (0.00 sec)
+
+
+Write a query to create a new Note from particular User (Use Note and UserNote tables - insert statement).
+mysql> insert into note values('nt6','work6','This work should be completed before the deadline','to do','2019-04-30');
+mysql> insert into usernote values('usnt5','usr6','nt6');
+
+
+Write a query to create a new Note from particular User to particular Category(Use Note and NoteCategory tables - insert statement)
+mysql> insert into note values('nt7','work7','This work should be completed before the deadline','60% done','2019-04-29');
+mysql> insert into NoteCategory values('nc7','nt6','ct6');
+
+
+Write a query to set a reminder for a particular note (Use Reminder and NoteReminder tables - insert statement)
+mysql> insert into reminder values('r6','movie','remind this tomorrow at 8pm','soon','2019-04-26','user6');
+mysql> insert into NoteReminder values('nr6','nt6','r6');
+
+
+Write a query to delete particular Note added by a User(Note and UserNote tables - delete statement)
+mysql> delete from note where note_id = (select note_id from usernote where user_id = 'usr5');
+mysql> select * from note;
++---------+------------+---------------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                      | note_status | note_creation_date |
++---------+------------+---------------------------------------------------+-------------+--------------------+
+| nt1     | work1      | This work should be done before the deadline      | 20% done    | 2019-04-06         |
+| nt2     | work2      | This work should be done before the deadline      | 30% done    | 2019-04-07         |
+| nt3     | work3      | This work should be done before the deadline      | 50% done    | 2019-04-08         |
+| nt4     | work4      | This work should be done before the deadline      | 75% done    | 2019-04-09         |
+| nt6     | work6      | This work should be completed before the deadline | to do       | 2019-04-30         |
+| nt7     | work7      | This work should be completed before the deadline | 60% done    | 2019-04-29         |
++---------+------------+---------------------------------------------------+-------------+--------------------+
+6 rows in set (0.00 sec)
+
+
+Write a query to delete particular Note from particular Category(Note and NoteCategory tables - delete statement)
+mysql> delete from note where note_id = (select note_id from NoteCategory where category_id = (select category_id from category where category_id='ct3'));
+mysql> select * from note;
++---------+------------+---------------------------------------------------+-------------+--------------------+
+| note_id | note_title | note_content                                      | note_status | note_creation_date |
++---------+------------+---------------------------------------------------+-------------+--------------------+
+| nt1     | work1      | This work should be done before the deadline      | 20% done    | 2019-04-06         |
+| nt2     | work2      | This work should be done before the deadline      | 30% done    | 2019-04-07         |
+| nt4     | work4      | This work should be done before the deadline      | 75% done    | 2019-04-09         |
+| nt6     | work6      | This work should be completed before the deadline | to do       | 2019-04-30         |
+| nt7     | work7      | This work should be completed before the deadline | 60% done    | 2019-04-29         |
++---------+------------+---------------------------------------------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+  
